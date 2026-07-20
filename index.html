@@ -11,15 +11,18 @@
                 font-family: 'OMORI_GAME2';
                 src: url('assets/OMORI_GAME2.ttf') format('truetype');
             }
-            h1 {
-                text-align: center;
-                width: 100%; /* Ensures the header spans the whole screen to find the true center */
-                font-family:'OMORI_GAME2';
-                color: white;
-                font-size: 95px;
-                text-shadow: #0b011c;
-                outline-color: #050505;
-            }
+            .strokeme{                
+                text-shadow:
+                    -2px -2px 0 #000,
+                    2px -2px 0 #000,
+                    -2px 2px 0 #000,
+                    2px 2px 0 #000;  
+                }  
+            .character{
+                position: absolute;
+                cursor: pointer;
+                 z-index: 10;
+                }
             .strokeme{                
                 text-shadow:
                     -2px -2px 0 #000,
@@ -27,79 +30,73 @@
                     -2px 2px 0 #000,
                     2px 2px 0 #000;  
                 }
-            .playground-scene {
-                position: relative;
-                display: inline-block; /* Fits the exact size of your background image */
-                }    
-            .swinging-character {
-                position: absolute;
-                cursor: pointer;
-                /* Adjust these percentage numbers until the sprite lines up perfectly with the seat */
-                 top: 13%;   
-                 left: 78%;  
-                 width: 90px; 
-                 z-index: 10; /* Ensures the character sits on top of the swing seat background */
-                }
-            .bench-character {
-                position: absolute;
-                cursor: pointer;
-                /* Adjust these percentage numbers until the sprite lines up perfectly with the seat */
-                 top: -24%;   
-                 left: 126.5%;  
-                 width: 82px; 
-                 z-index: 10; /* Ensures the character sits on top of the swing seat background */
-                }
-                .bench-character2 {
-                position: absolute;
-                cursor: pointer;
-                /* Adjust these percentage numbers until the sprite lines up perfectly with the seat */
-                 top: -27.5%;   
-                 left: 119%;  
-                 width: 85px; 
-                 z-index: 10; /* Ensures the character sits on top of the swing seat background */
-                }
-            .polaroids{
-                position: absolute;
-                cursor: pointer;
-                top: 70%;   
-                left: 100%;  
-                width: 70px; 
-                z-index: 10;
-            }
             .bouncing_header
             {
+                position: absolute; 
+                top:8%;
+                left:0;
+                right:0;
+                width:100%;
+                z-index:1000;
+                text-align: center;
                 display: inline-block;/* Required for transforms to work well on text */
-                animation: floatUpDown 2s ease-in-out infinite
+                animation: floatUpDown 2s ease-in-out infinite;
+                /* 3. RESPONSIVE FONT & TYPOGRAPHY */
+                font-family: 'OMORI_GAME2';
+                color: white;
+                text-align: center;
+                /* Dynamically scales text down on smaller laptops, maxes out at 95px */
+                font-size: clamp(40px, 5vw, 95px); 
+
+                /* 4. RETRO PIXEL ART EFFECTS */
+                text-shadow: 4px 4px 0px #0b011c;  /* Clean retro drop shadow */
+                outline-color: black;
             }
             @keyframes floatUpDown {
             0% {
                 transform: translateY(0px); /* Starting position */
             }
             50% {
-                transform: translateY(-20px); /* Moves up by 20 pixels */
+                transform: translateY(-10%); /* Moves up by 20 pixels */
             }
             100% {
                 transform: translateY(0px); /* Returns to starting position */
             }
             }
             body {
-            background-image: url('assets/new background.jpg');
+            display: flex;
+            justify-content: center;   /* 2. Center your game box horizontally */
+            align-items: center;       /* 3. Center your game box vertically */;
             background-repeat: no-repeat;
-            background-position: center top;
-            background-size: 100%;
+            background-position: center center;
+            background-size: contain;
             background-color: #0b011c;
-            margin: 0;
+            margin-top: 0;
             height: 100vh;
             image-rendering: pixelated;
             }
+            .game-wrapper {
+            position: relative;
+            max-height: 100vh;
+            max-width: 100vw;
+            aspect-ratio: 1818 / 962; /* Match the width/height ratio of your background image */
+            display: inline-block;
+        }
+            .game-map {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                image-rendering: pixelated;
+            }
             .bottom-dialogue {
             display: none; 
-            position: fixed;
-            bottom: 20px; 
+            position: absolute;
+            bottom: 5%; 
             left: 50%;
             transform: translateX(-50%); 
             width: 100%;
-            max-width: 800px;
+            max-width: 60%;
             background-color: #050505; 
             color: #ffffff;
             padding-top:10px;
@@ -127,7 +124,7 @@
             /* Blurs and darkens the entire browser layout */
             .dark-overlay {
                 display: none; /* Controlled by JavaScript triggers */
-                position: fixed;
+                position: absolute;
                 top: 0;
                 left: 0;
                 width: 100vw;
@@ -148,8 +145,7 @@
                 }
             .showcase-photo{
                 box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
-                width: 350px;
-                height: 421px;
+                aspect-ratio: 350/421;
             }
             .center-image-container {
                 display: flex;
@@ -158,7 +154,7 @@
                 justify-content: center;
                 }
             #flash-overlay {
-                position: fixed;
+                position: absolute;
                 top: 0;
                 left: 0;
                 width: 100vw;
@@ -166,21 +162,23 @@
                 background-color: white;
                 opacity: 0;
                 pointer-events: none;
-                z-index: 9999; /* keeps it on top of everything else */
-                transition: opacity 0.1s ease-in-out; /* speed going into the flash */
+                z-index: 9999; /* Keeps it on top of everything else */
+                transition: opacity 0.1s ease-in-out; /* The speed going into the flash */
             }
             #flash-overlay.active {
                 opacity: 1;
-                transition: opacity 0.05s ease-in-out; /* snap to white quickly */
+                transition: opacity 0.05s ease-in-out; /* Snap to white quickly */
                 }        
 
         </style>
 
         <title>Happy 20th Birthday!!!</title>
-        <link rel="icon" type="image/png" href="assets/iconimag.png">
+        <link rel="icon" type="image/png" href="iconimag.png">
     </head>
 
     <body>
+        <div class="game-wrapper">
+
         <div id="flash-overlay"></div>  <!-- FLASH WHITE SCREEN -->
         <div id="dialogueBox" class="bottom-dialogue">   <!--dialogue box-->
         <h4 id="character_name" style="font-family: OMORI_GAME2; margin-top: 0; margin-bottom: 0; color: rgb(171, 32, 225)"></h4>    
@@ -189,47 +187,46 @@
         <button id="next_button"><u>next</u></button>
         </div>
         <br>
-        <audio id="bg_music" autoplay loop>    <!--background music-->
-            <source src="assets/05. By Your Side..mp3">
-        </audio>
-        <audio id="wrongSound">
-            <source src="assets/cant_do_that.m4a">     <!-- WRONG CHOICE SOUND EFFECT-->
-        </audio>
-        <audio id="selectSound"><source src="assets/BA_do_nothing_falls_over.ogg"></audio>   
+        <audio id="bg_music" loop>    <!--background music--><source src="assets/05. By Your Side..mp3"></audio>
+        <audio id="wrongSound"><source src="assets/cant_do_that.m4a">     <!-- WRONG CHOICE SOUND EFFECT--> </audio>
+        <audio id="selectSound"><source src="assets/BA_do_nothing_falls_over.ogg"></audio>    <!-- SELECT SOUND EFFECT-->
         <audio id="typeSound"><source src="assets/omori.ogg"></audio>          <!--typing sound-->
         <audio id="PolaroidSound"><source src="assets/SE_Cassette_button.ogg"></audio>    <!--opening polaroids sound-->
         <audio id="NextPolaroidSound"><source src="assets/SE_turn_page.ogg"></audio>     <!--next polaroid sound-->
         <audio id="SweetheartSound"><source src="assets/SE_ohoho.ogg"></audio>     <!--ohoho sound-->
         <audio id="PicnicSound"><source src="assets/picnicsound.m4a"></audio>     <!--picnic sound-->
-         <audio id="PhotographSound"><source src="assets/19. Space Road 1979.mp3"></audio>     <!--photograph background sound-->
+        <audio id="PhotographSound"><source src="assets/19. Space Road 1979.mp3"></audio>     <!--photograph background sound-->
 
+        
+        <img src="assets/new background.jpg" class="game-map">
         <h1 class="bouncing_header strokeme"> Happy 20th Birthday Nilu! </h1>                   <!--MAIN TITLE--> 
-        <div class="playground-scene">
-            <img src="assets/pixil-gif-drawing.gif" width="90" id="NushiButton" style="margin-top: 200px; margin-left: 800px; cursor: pointer;">   <!--NUSHI CHARACTER-->
-            <img src="assets/avi_gif.gif" class="swinging-character" id="AviButton">   <!--AVI CHARACTER-->
-            <img src="assets/smit_gif.gif" class="bench-character" id="SmitButton" top:50%>  <!--SMIT-->
-            <img src="assets/anisha_gif.gif" class="bench-character2" id="AnishaButton"> <!--ANISHA-->
-            <img src="assets/polaroids.png" class="polaroids" id="Polaroids">  <!--POLAROIDS-->    
-            <img src="assets/picnic_blanket.png" class="bench-character2" id="PicnicMat" style="width: 200px; top:-10%;left:13%">  <!--PICNIC MAT--> 
-            <img src="assets/birthday_cake.png" class="bench-character2" id="BirthdayCake" style="width: 80px; top:-18%;left:24%">  <!--BIRTHDAY CAKE--> 
-            <img src="assets/godi_gif.gif" class="bench-character2" id="GodiButton" style="width: 118px; top:9%;left:85%">  <!--GODYA--> 
-            <img src="assets/kajol_gif.gif" class="bench-character2" id="KajolButton" style="width: 95px; top:5%;left:13%">  <!--KAJOL--> 
-            <img src="assets/nilu_gif.png" class="bench-character2" id="NiluButton" style="width: 100px; top:15%;left:20%">  <!--NILU--> 
-            <img src="assets/sahil_gif.gif" class="bench-character2" id="SahilButton" style="width: 125px; top:20%;left:150%">  <!--SAHIL--> 
-            <img src="assets/lavya_gif.gif" class="bench-character2" id="LavyaButton" style="width: 120px; top:30%;left:140%">  <!--LAVYA--> 
-            <img src="assets/sneha_gif.gif" class="bench-character2" id="SnehaButton" style="width: 90px; top:8%;left:32%">  <!--SNEHA--> 
-            <img src="assets/atharva_gif.gif" class="bench-character2" id="AtharvaButton" style="width: 120px; top:55%;left:40%">  <!--ATHARVA--> 
-            <img src="assets/aditi_gif.gif" class="bench-character2" id="AditiButton" style="width: 120px; top:-45%;left:25%">  <!--ADITI--> 
-            <img src="assets/kshitija_gif.gif" class="bench-character2" id="KshitijaButton" style="width: 110px; top:-45%;left:150%">  <!--KSHITIJA--> 
-            <img src="assets/siya_gif.gif" class="bench-character2" id="SiyaButton" style="width: 110px; top:70%;left:135%">  <!--SIYA--> 
+         
+            <img src="assets/pixil-gif-drawing.gif" class="character" id="NushiButton" style="top: 60%; left: 50%; width:5.8%";>   <!--NUSHI CHARACTER-->
+            <img src="assets/avi_gif.gif" class="character" id="AviButton" style="top: 38%; left: 44.5%; width:6%">   <!--AVI CHARACTER-->
+            <img src="assets/smit_gif.gif" class="character" id="SmitButton"style="top: 25%; left: 72.5%; width:5.5%">  <!--SMIT-->
+            <img src="assets/anisha_gif.gif" class="character" id="AnishaButton" style="top: 23.5%; left: 68%; width:5.8%"> <!--ANISHA-->
+            <img src="assets/polaroids.png" class="character" id="Polaroids" style="top: 60%; left: 57%; width:4%">  <!--POLAROIDS-->    
+            <img src="assets/picnic_blanket.png" class="character" id="PicnicMat" style="width: 14%; top:28%;left:7%">  <!--PICNIC MAT--> 
+            <img src="assets/birthday_cake.png" class="character" id="BirthdayCake" style="width: 80px; top:23%;left:13%">  <!--BIRTHDAY CAKE--> 
+            <img src="assets/godi_gif.gif" class="character" id="GodiButton" style="top: 37%; left: 49%; width:7.8%">  <!--GODYA--> 
+            <img src="assets/kajol_gif.gif" class="character" id="KajolButton" style="width: 6.5%; top:32%;left:7%">  <!--KAJOL--> 
+            <img src="assets/nilu_gif.png" class="character" id="NiluButton" style="width: 7.2%; top:36%;left:12%">  <!--NILU--> 
+            <img src="assets/sahil_gif.gif" class="character" id="SahilButton" style="width: 125px; top:40%;left:85%">  <!--SAHIL--> 
+            <img src="assets/lavya_gif.gif" class="character" id="LavyaButton" style="width: 8%; top:48%;left:80%">  <!--LAVYA--> 
+            <img src="assets/sneha_gif.gif" class="character" id="SnehaButton" style="width: 6.3%; top:29%;left:20%">  <!--SNEHA--> 
+            <img src="assets/atharva_gif.gif" class="character" id="AtharvaButton" style="width: 8.3%; top:55%;left:21%">  <!--ATHARVA--> 
+            <img src="assets/aditi_gif.gif" class="character" id="AditiButton" style="width: 8.2%; top:12%;left:16%">  <!--ADITI--> 
+            <img src="assets/kshitija_gif.gif" class="character" id="KshitijaButton" style="width: 6.7%; top:20%;left:88%">  <!--KSHITIJA--> 
+            <img src="assets/siya_gif.gif" class="character" id="SiyaButton" style="width: 7.5%; top:70%;left:88%">  <!--SIYA--> 
+          
         </div>
         <!-- Full-screen darkening overlay (Hidden by default) -->
         <div id="imageShowcaseOverlay" class="dark-overlay">
             <!-- Wrapper to hold your images in a clean row/grid -->
             <div class="center-image-container">
-                <button id="backward_arrow"><img src="assets/red_arrow.gif"style=" width: 90px; height: 23px; transform: scaleX(-1);" ></button>
+                <button id="backward_arrow"><img src="assets/red_arrow.gif"style="  width: clamp(40px, 6vw, 90px); height: auto; transform: scaleX(-1);" ></button>
                 <img id="polaroid_image" src="assets/polaroid1.png" class="showcase-photo" alt="Memory 1">
-                <button id="forward_arrow"><img src="assets/red_arrow.gif"style=" width: 90px; height: 23px" ></button>
+                <button id="forward_arrow"><img src="assets/red_arrow.gif"style=" width: clamp(40px, 6vw, 90px);; height: auto" ></button>
             </div>
             <!-- Tiny note to let users close it -->
             <p class="close-hint" id="ClosePolaroids">Click here to close</p>
@@ -240,6 +237,8 @@
 
         <script>
              const BGMUSIC = document.getElementById('bg_music');
+             const StartButton = document.getElementById('StartButton');
+             const StartScreen = document.getElementById('StartScreen');
              const gifButton = document.getElementById('NushiButton');
              const dialogueBox = document.getElementById('dialogueBox');   
              const typingText = document.getElementById('typingText');
@@ -291,6 +290,7 @@
                 selectSound.play();
                 StartScreen.style.display="none";
             })
+
              //ANISH
              AviButton.addEventListener('click', () => {
                 currentCharacter="anish";
