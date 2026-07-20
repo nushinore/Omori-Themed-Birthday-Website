@@ -233,6 +233,9 @@
             <!-- Tiny note to let users close it -->
             <p class="close-hint" id="ClosePolaroids">Click here to close</p>
         </div>
+        <div id="StartScreen" class="dark-overlay" style="display:flex;">
+            <button id="StartButton" style="font-family: 'OMORI_GAME2'; color:black; background-color: white;"><b>start</b></button>
+        </div>
 
         <script>
              const BGMUSIC = document.getElementById('bg_music');
@@ -280,8 +283,13 @@
 
              let index = 0;
              let currentPhotoIndex = 0; // Starts tracking sequence at index zero
-             BGMUSIC.play();
 
+             //START
+            StartButton.addEventListener('click', () => {
+                BGMUSIC.play();
+                selectSound.play();
+                StartScreen.style.display="none";
+            })
              //ANISH
              AviButton.addEventListener('click', () => {
                 currentCharacter="anish";
